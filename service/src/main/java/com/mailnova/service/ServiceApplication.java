@@ -1,13 +1,13 @@
-package com.mailnova;
+package com.mailnova.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MailnovaServiceApplication {
+public class ServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MailnovaServiceApplication.class, args);
+        SpringApplication.run(ServiceApplication.class, args);
     }
 
 }
