@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mailnova</groupId>
-    <artifactId>mailnova-service</artifactId>
+    <artifactId>mailnova-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>mail-nova-service</name>
     <description>mail-nova-service</description>
@@ -29,11 +29,9 @@
     <properties>
         <java.version>21</java.version>
     </properties>
+    <packaging>pom</packaging>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
@@ -45,13 +43,6 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
 
 </project>

@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.mailnova</groupId>
-        <artifactId>mailnova-service</artifactId>
+        <artifactId>mailnova-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mailnova.shared</groupId>
-    <artifactId>mailnova-shared</artifactId>
+    <artifactId>shared</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>mail-nova-shared</name>
     <description>mail-nova-shared</description>
@@ -41,14 +41,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
- <!--   <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>-->
-
 </project>
