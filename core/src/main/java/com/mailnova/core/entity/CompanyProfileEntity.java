@@ -5,8 +5,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table
+@Table(name = "tb_comp_profile")
 public class CompanyProfileEntity extends AbstractIdEntity{
 
     @Column(name = "name")
@@ -26,6 +28,12 @@ public class CompanyProfileEntity extends AbstractIdEntity{
 
     @Column(name = "contact_email")
     private String contactEmail;
+
+    @Column(name = "crated_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
     public String getName() {
         return name;
@@ -73,5 +81,21 @@ public class CompanyProfileEntity extends AbstractIdEntity{
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

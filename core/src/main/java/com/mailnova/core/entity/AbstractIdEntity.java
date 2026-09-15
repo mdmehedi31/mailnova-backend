@@ -4,7 +4,6 @@ package com.mailnova.core.entity;
 import jakarta.persistence.*;
 
 @MappedSuperclass
-@Entity
 public class AbstractIdEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

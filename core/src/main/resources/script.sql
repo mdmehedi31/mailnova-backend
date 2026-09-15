@@ -71,3 +71,11 @@ CREATE TABLE email_campaign_recipient (
                                           opened_at DATETIME,
                                           read_count INT DEFAULT 0
 );
+
+
+ALTER TABLE `mailnova`.`tb_comp_profile`
+    ADD COLUMN `created_at` DATETIME NULL AFTER `contact_email`;
+
+
+ALTER TABLE `mailnova`.`tb_comp_profile`
+    ADD COLUMN `is_deleted` TINYINT NULL DEFAULT 0 AFTER `created_at`;

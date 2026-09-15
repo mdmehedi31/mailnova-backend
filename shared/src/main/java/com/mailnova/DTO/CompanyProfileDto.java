@@ -1,5 +1,7 @@
 package com.mailnova.DTO;
 
+import java.time.LocalDateTime;
+
 public class CompanyProfileDto extends AbstractId {
 
     private String name;
@@ -8,6 +10,7 @@ public class CompanyProfileDto extends AbstractId {
     private String phoneNo;
     private String address;
     private String contactEmail;
+    private LocalDateTime createdAt;
 
     public String getName() {
         return name;
@@ -55,5 +58,13 @@ public class CompanyProfileDto extends AbstractId {
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
