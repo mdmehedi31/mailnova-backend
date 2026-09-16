@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,7 +24,8 @@ public class CompanyProfileServiceImpl implements ICompanyProfileService {
 
     private static final Logger log = LoggerFactory.getLogger(CompanyProfileServiceImpl.class);
 
-    public CompanyProfileServiceImpl(CompanyProfileMapper companyProfileMapper, ICompanyProfileDBService companyProfileDBService) {
+    public CompanyProfileServiceImpl(CompanyProfileMapper companyProfileMapper,
+                                     ICompanyProfileDBService companyProfileDBService) {
         this.companyProfileMapper = companyProfileMapper;
         this.companyProfileDBService = companyProfileDBService;
     }
@@ -59,7 +61,18 @@ public class CompanyProfileServiceImpl implements ICompanyProfileService {
 
     @Override
     public List<CompanyProfileDto> getCompanyProfilesByUserId(Integer userId) {
-        return List.of();
+        try {
+
+            List<CompanyProfileEntity> companyProfileEntities = this.companyProfileDBService.getAllCompanyProfilesByUserId(userId);
+
+            if(companyProfileEntities != null && companyProfileEntities.size() > 0){
+                return companyProfileMapper.entitesToDtos(companyProfileEntities);
+            }
+            return new ArrayList<>();
+        }catch (Exception e){
+            log.error("An exception thrown ",e);
+            return new ArrayList<>();
+        }
     }
 
     @Override

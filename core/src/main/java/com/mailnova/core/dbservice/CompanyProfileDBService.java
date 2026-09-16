@@ -45,6 +45,10 @@ public class CompanyProfileDBService implements ICompanyProfileDBService {
     @Override
     public List<CompanyProfileEntity> getAllCompanyProfilesByUserId(Integer userId) {
 
-        return List.of();
+        try{
+            return this.companyProfileRepository.findAllByCreatedByAndIsDeletedIsNullOrIsDeleted(userId, false);
+        }catch (Exception e) {
+            throw e;
+        }
     }
 }

@@ -11,6 +11,15 @@ public class CompanyProfileDto extends AbstractId {
     private String address;
     private String contactEmail;
     private LocalDateTime createdAt;
+    private Integer createdBy;
+
+    public Integer getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
+    }
 
     public String getName() {
         return name;
@@ -60,11 +69,8 @@ public class CompanyProfileDto extends AbstractId {
         this.contactEmail = contactEmail;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public LocalDateTime getCreatedAt() {return createdAt;}
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(LocalDateTime createdAt) {this.createdAt = createdAt;
     }
 }

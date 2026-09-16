@@ -18,7 +18,7 @@ public class CompanyProfileEntity extends AbstractIdEntity{
     private String companyEmail;
 
     @Column(name = "email_send_add")
-    private String fromEmailSendAdd;
+    private String fromEmailSendAddress;
 
     @Column(name = "phone_no")
     private String phoneNo;
@@ -29,11 +29,23 @@ public class CompanyProfileEntity extends AbstractIdEntity{
     @Column(name = "contact_email")
     private String contactEmail;
 
-    @Column(name = "crated_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
+    @Column(name = "created_by")
+    private Integer createdBy;
+
+
+    public Integer getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
+    }
 
     public String getName() {
         return name;
@@ -51,12 +63,12 @@ public class CompanyProfileEntity extends AbstractIdEntity{
         this.companyEmail = companyEmail;
     }
 
-    public String getFromEmailSendAdd() {
-        return fromEmailSendAdd;
+    public String getFromEmailSendAddress() {
+        return fromEmailSendAddress;
     }
 
-    public void setFromEmailSendAdd(String fromEmailSendAdd) {
-        this.fromEmailSendAdd = fromEmailSendAdd;
+    public void setFromEmailSendAddress(String fromEmailSendAddress) {
+        this.fromEmailSendAddress = fromEmailSendAddress;
     }
 
     public String getPhoneNo() {

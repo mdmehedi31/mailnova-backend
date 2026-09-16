@@ -79,3 +79,8 @@ ALTER TABLE `mailnova`.`tb_comp_profile`
 
 ALTER TABLE `mailnova`.`tb_comp_profile`
     ADD COLUMN `is_deleted` TINYINT NULL DEFAULT 0 AFTER `created_at`;
+
+
+ALTER TABLE `mailnova`.`tb_comp_profile`
+    ADD COLUMN `created_by` INT NULL AFTER `is_deleted`;
+
