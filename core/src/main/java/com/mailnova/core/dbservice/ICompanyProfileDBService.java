@@ -9,4 +9,6 @@ public interface ICompanyProfileDBService {
     public CompanyProfileEntity getCompanyProfileById(Integer companyProfileId);
     public CompanyProfileEntity saveCompanyProfile(CompanyProfileEntity companyProfile);
     public List<CompanyProfileEntity> getAllCompanyProfilesByUserId(Integer userId);
+    public CompanyProfileEntity getCompanyProfileByEmail(String companyEmail);
+    public CompanyProfileEntity getCompanyProfileByFromEmailAddress(String fromEmailAddress);
 }

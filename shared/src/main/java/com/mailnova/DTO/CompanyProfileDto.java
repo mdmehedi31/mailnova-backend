@@ -2,7 +2,7 @@ package com.mailnova.DTO;
 
 import java.time.LocalDateTime;
 
-public class CompanyProfileDto extends AbstractId {
+public class CompanyProfileDto extends AbstractId   implements GeneralApiResponse{
 
     private String name;
     private String companyEmail;

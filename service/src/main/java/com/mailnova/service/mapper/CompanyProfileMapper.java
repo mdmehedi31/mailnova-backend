@@ -3,8 +3,7 @@ package com.mailnova.service.mapper;
 
 import com.mailnova.DTO.CompanyProfileDto;
 import com.mailnova.core.entity.CompanyProfileEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -14,5 +13,13 @@ public interface CompanyProfileMapper {
     CompanyProfileEntity dtoToEntity(CompanyProfileDto dto);
     CompanyProfileDto entityToDto(CompanyProfileEntity entity);
     List<CompanyProfileDto> entitesToDtos(List<CompanyProfileEntity> entities);
+
+    @BeanMapping(
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+    )
+    void updateEntityFromDto(
+            CompanyProfileDto dto,
+            @MappingTarget CompanyProfileEntity entity
+    );
 
 }
