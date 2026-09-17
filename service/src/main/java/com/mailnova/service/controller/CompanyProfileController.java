@@ -45,7 +45,7 @@ public class CompanyProfileController {
         return new ResponseEntity<>(companyProfileDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteCompanyProfileById(@PathVariable Integer id) {
         ApiResponse response= this.companyProfileService.deleteCompanyProfile(id);
         return new ResponseEntity<>(response, HttpStatus.OK);

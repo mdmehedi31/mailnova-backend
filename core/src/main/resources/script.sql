@@ -84,3 +84,17 @@ ALTER TABLE `mailnova`.`tb_comp_profile`
 ALTER TABLE `mailnova`.`tb_comp_profile`
     ADD COLUMN `created_by` INT NULL AFTER `is_deleted`;
 
+
+ALTER TABLE `mailnova`.`tb_comp_profile`
+    ADD COLUMN `website` LONGTEXT NULL AFTER `created_by`;
+
+ALTER TABLE `mailnova`.`tb_comp_profile`
+    ADD COLUMN `color_code` VARCHAR(50) NULL AFTER `website`
+
+ALTER TABLE `mailnova`.`tb_comp_profile`
+    ADD COLUMN `status` TINYINT NULL AFTER `color_code`;
+
+
+ALTER TABLE `mailnova`.`tb_comp_profile`
+    CHANGE COLUMN `status` `status` TINYINT NULL DEFAULT 1 ;
+

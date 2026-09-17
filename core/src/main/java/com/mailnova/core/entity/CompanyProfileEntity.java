@@ -38,6 +38,38 @@ public class CompanyProfileEntity extends AbstractIdEntity{
     @Column(name = "created_by")
     private Integer createdBy;
 
+    @Column(name = "website")
+    private String website;
+
+    @Column(name = "color_code")
+    private String colorCode;
+
+    @Column(name = "status")
+    private Boolean status;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public String getColorCode() {
+        return colorCode;
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
     public Integer getCreatedBy() {
         return createdBy;

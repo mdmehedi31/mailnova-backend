@@ -12,6 +12,34 @@ public class CompanyProfileDto extends AbstractId   implements GeneralApiRespons
     private String contactEmail;
     private LocalDateTime createdAt;
     private Integer createdBy;
+    private String website;
+    private Boolean status=true;
+    private String colorCode;
+
+
+    public String getColorCode() {
+        return colorCode;
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
     public Integer getCreatedBy() {
         return createdBy;
