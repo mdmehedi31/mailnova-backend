@@ -38,6 +38,15 @@ public class CompanyProfileServiceImpl implements ICompanyProfileService {
 
             log.info("Create or modify company profile :::");
 
+            if(companyProfileDto==null)
+                throw new InvalidInputException("Company profile can not be empty");
+
+            if (companyProfileDto.getName() == null)
+                throw new InvalidInputException("Company name cannot be empty");
+
+            if (companyProfileDto.getCompanyEmail() == null)
+                throw new InvalidInputException("Company email cannot be empty");
+
             CompanyProfileEntity companyProfileEntity = null;
             if (companyProfileDto.getId() != null) {
                 // If not found the throws exception
@@ -64,12 +73,6 @@ public class CompanyProfileServiceImpl implements ICompanyProfileService {
                     throw new NotFoundException("Company profile not found with this id");
                 }
             } else {
-
-                if (companyProfileDto.getName() == null)
-                    throw new InvalidInputException("Company name cannot be empty");
-
-                if (companyProfileDto.getCompanyEmail() == null)
-                    throw new InvalidInputException("Company email cannot be empty");
 
                 ApiResponse response = companyInfoValidationCheck(companyProfileDto, false);
                 if (response != null) return response;
