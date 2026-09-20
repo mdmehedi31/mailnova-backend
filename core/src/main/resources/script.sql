@@ -98,3 +98,15 @@ ALTER TABLE `mailnova`.`tb_comp_profile`
 ALTER TABLE `mailnova`.`tb_comp_profile`
     CHANGE COLUMN `status` `status` TINYINT NULL DEFAULT 1 ;
 
+
+ALTER TABLE email_campaign
+    CHANGE COLUMN send_schedule_date scheduled_at_utc TIMESTAMP NULL,
+
+    ADD COLUMN timezone VARCHAR(100),
+    ADD COLUMN status VARCHAR(30),
+
+    ADD COLUMN started_on TIMESTAMP NULL,
+    ADD COLUMN completed_on TIMESTAMP NULL,
+    ADD COLUMN cancelled_on TIMESTAMP NULL,
+
+    ADD COLUMN failure_reason TEXT;
