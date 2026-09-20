@@ -110,3 +110,10 @@ ALTER TABLE email_campaign
     ADD COLUMN cancelled_on TIMESTAMP NULL,
 
     ADD COLUMN failure_reason TEXT;
+
+
+ALTER TABLE email_campaign
+    ADD COLUMN company_id boolean not null
+
+ALTER TABLE email_campaign
+    ADD COLUMN is_deleted boolean not null
