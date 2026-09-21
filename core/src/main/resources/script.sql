@@ -113,7 +113,27 @@ ALTER TABLE email_campaign
 
 
 ALTER TABLE email_campaign
-    ADD COLUMN company_id boolean not null
+    ADD COLUMN company_id boolean not null;
 
 ALTER TABLE email_campaign
-    ADD COLUMN is_deleted boolean not null
+    ADD COLUMN is_deleted boolean not null;
+
+
+
+CREATE TABLE tb_email_template_type (
+                                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                        name VARCHAR(500) NOT NULL,
+                                        description TEXT,
+                                        is_active BOOLEAN NOT NULL DEFAULT TRUE,
+                                        created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE tb_email_template_sub_type (
+                                            id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                            type_id BIGINT NOT NULL,
+                                            name VARCHAR(500) NOT NULL,
+                                            is_active BOOLEAN NOT NULL DEFAULT TRUE,
+                                            created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                            email_template_type_id bigint not null
+);
