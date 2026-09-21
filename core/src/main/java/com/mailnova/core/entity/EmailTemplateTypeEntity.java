@@ -23,9 +23,6 @@ public class EmailTemplateTypeEntity extends AbstractIdEntity {
     @Column(name = "created_on")
     private LocalDateTime createdOn;
 
-    @OneToMany(mappedBy = "emailTemplateType")
-    private List<EmailTemplateSubTypeEntity> subTypes;
-
 
     public String getName() {
         return name;
@@ -57,13 +54,5 @@ public class EmailTemplateTypeEntity extends AbstractIdEntity {
 
     public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
-    }
-
-    public List<EmailTemplateSubTypeEntity> getSubTypes() {
-        return subTypes;
-    }
-
-    public void setSubTypes(List<EmailTemplateSubTypeEntity> subTypes) {
-        this.subTypes = subTypes;
     }
 }

@@ -1,14 +1,41 @@
 package com.mailnova.DTO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.mailnova.exceptionmessage.ApiResponse;
+
 import java.time.LocalDateTime;
 
-public class EmailTemplateSubTypeDTO extends AbstractId{
+public class EmailTemplateSubTypeDTO  extends ApiResponse {
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer id;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer emailTemplateTypeId;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean isActive;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private LocalDateTime createdOn;
 
+    public EmailTemplateSubTypeDTO() {
+    }
+
+    public EmailTemplateSubTypeDTO(String message) {
+        super(message);
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getEmailTemplateTypeId() {
         return emailTemplateTypeId;

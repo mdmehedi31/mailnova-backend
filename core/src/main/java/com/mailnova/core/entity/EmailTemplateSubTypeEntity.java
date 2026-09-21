@@ -16,9 +16,9 @@ public class EmailTemplateSubTypeEntity extends AbstractIdEntity {
     @Column(name = "created_on")
     private LocalDateTime createdOn;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(name = "email_template_type_id")
-    private EmailTemplateTypeEntity emailTemplateType;
+    private Integer emailTemplateTypeId;
 
 
     public String getName() {
@@ -29,11 +29,11 @@ public class EmailTemplateSubTypeEntity extends AbstractIdEntity {
         this.name = name;
     }
 
-    public Boolean getActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 
@@ -45,11 +45,11 @@ public class EmailTemplateSubTypeEntity extends AbstractIdEntity {
         this.createdOn = createdOn;
     }
 
-    public EmailTemplateTypeEntity getEmailTemplateType() {
-        return emailTemplateType;
+    public Integer getEmailTemplateTypeId() {
+        return emailTemplateTypeId;
     }
 
-    public void setEmailTemplateType(EmailTemplateTypeEntity emailTemplateType) {
-        this.emailTemplateType = emailTemplateType;
+    public void setEmailTemplateTypeId(Integer emailTemplateTypeId) {
+        this.emailTemplateTypeId = emailTemplateTypeId;
     }
 }

@@ -5,6 +5,7 @@ import com.mailnova.DTO.EmailTemplateSubTypeDTO;
 import com.mailnova.DTO.EmailTemplateTypeDTO;
 import com.mailnova.core.entity.EmailTemplateSubTypeEntity;
 import com.mailnova.core.entity.EmailTemplateTypeEntity;
+import com.mailnova.core.exceptionhandler.InvalidInputException;
 import com.mailnova.core.exceptionhandler.NotFoundException;
 import com.mailnova.core.repository.EmailTemplateSubTypeRepository;
 import com.mailnova.core.repository.EmailTemplateTypeRepository;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,16 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
     @Override
     public EmailTemplateTypeDTO createType(EmailTemplateTypeDTO dto) {
         try{
+
+            if (dto.getName() == null || dto.getName().isBlank()) {
+                throw new InvalidParameterException("Name cannot be empty");
+            }
+
+            EmailTemplateTypeEntity isExist = emailTemplateTypeRepository.findByName(dto.getName());
+            if (isExist != null ) {
+                return new EmailTemplateTypeDTO("Email Template Type already exists");
+            }
+
             EmailTemplateTypeEntity entity =
                     emailTemplateTypeMapper.dtoTO_entity(dto);
 
@@ -72,6 +84,11 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
             }
             EmailTemplateTypeEntity entity = entityOpt.get();
 
+            EmailTemplateTypeEntity isExist = emailTemplateTypeRepository.findByName(dto.getName());
+            if (isExist != null && !isExist.getId().equals(dto.getId())) {
+                return new EmailTemplateTypeDTO("Email Template Type already exists");
+            }
+
             entity = emailTemplateTypeMapper.updateEntity(dto, entity);
 
             EmailTemplateTypeEntity updated =
@@ -95,7 +112,7 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
 
         try{
             Optional<EmailTemplateTypeEntity> entityOpt =
-                    emailTemplateTypeRepository.findById(id);
+                    emailTemplateTypeRepository.findByIdAndIsActiveIsNullOrIsActive(id);
 
             if (!entityOpt.isPresent()) {
                 throw new NotFoundException("Email template not found");
@@ -106,7 +123,7 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
             return emailTemplateTypeMapper.entityToDto(entity);
         }catch (NotFoundException e) {
             log.error("An exception thrown : ", e);
-            return null;
+            return new EmailTemplateTypeDTO("Email template not found");
         }
         catch (Exception e){
             log.error("An exception thrown : ",e);
@@ -120,7 +137,7 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
     public List<EmailTemplateTypeDTO> getAllTypes() {
         try{
 
-            List<EmailTemplateTypeEntity> emailTemplateTypeEntities= this.emailTemplateTypeRepository.findAll();
+            List<EmailTemplateTypeEntity> emailTemplateTypeEntities= this.emailTemplateTypeRepository.findAllByIsActiveIsNullOrIsActive(true);
             return emailTemplateTypeMapper.emailTemplateEntitiesToList(emailTemplateTypeEntities);
 
         }catch (Exception e){
@@ -158,6 +175,13 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
 
         try{
 
+            if(dto.getName() == null || dto.getName().isBlank()) {
+                throw new InvalidInputException("Name cannot be empty");
+            }
+
+            if (dto.getEmailTemplateTypeId()==null){
+                throw new InvalidInputException("Parent Email template type cannot be empty");
+            }
             Optional<EmailTemplateTypeEntity> type =
                     emailTemplateTypeRepository.findById(
                                     dto.getEmailTemplateTypeId());
@@ -166,10 +190,16 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
                 throw new NotFoundException("Email template type not found");
             }
 
+            EmailTemplateSubTypeEntity emailTemplateSubTypeEntity = this.emailTemplateSubTypeRepository.
+                    findByEmailTemplateTypeIdAndName(dto.getEmailTemplateTypeId(), dto.getName());
+
+            if (emailTemplateSubTypeEntity != null) {
+                return new EmailTemplateSubTypeDTO("Email sub-template type already exists");
+            }
             EmailTemplateSubTypeEntity entity =
                     emailTemplateSubTypeMapper.toEntity(dto);
 
-            entity.setEmailTemplateType(type.get());
+            entity.setEmailTemplateTypeId(type.get().getId());
             entity.setCreatedOn(LocalDateTime.now());
 
             EmailTemplateSubTypeEntity saved =
@@ -177,9 +207,13 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
 
             return emailTemplateSubTypeMapper.toDto(saved);
 
-        }catch (NotFoundException e){
+        }catch (InvalidInputException e){
             log.error("An exception thrown : ",e);
-            return null;
+            return new EmailTemplateSubTypeDTO(e.getMessage());
+        }
+        catch (NotFoundException e){
+            log.error("An exception thrown : ",e);
+            return new EmailTemplateSubTypeDTO(e.getMessage());
         }
         catch (Exception e){
             log.error("An exception thrown : ",e);
@@ -209,10 +243,16 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
                 throw new NotFoundException("Email template type not found");
             }
 
+            EmailTemplateSubTypeEntity emailTemplateSubTypeEntity= emailTemplateSubTypeRepository.findByEmailTemplateTypeIdAndName(dto.getEmailTemplateTypeId(), dto.getName());
+
+            if(emailTemplateSubTypeEntity != null && !emailTemplateSubTypeEntity.getId().equals(dto.getId())) {
+                return new EmailTemplateSubTypeDTO("Email sub-template type already exists");
+            }
+
             EmailTemplateSubTypeEntity entity= entityOpt.get();
             entity.setName(dto.getName());
-            entity.setActive(dto.getIsActive());
-            entity.setEmailTemplateType(type.get());
+            entity.setIsActive(dto.getIsActive());
+            entity.setEmailTemplateTypeId(type.get().getId());
 
             EmailTemplateSubTypeEntity updated =
                     emailTemplateSubTypeRepository.save(entity);
@@ -221,7 +261,7 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
 
         }catch (NotFoundException e){
             log.error("An exception thrown : ",e);
-            return null;
+            return new EmailTemplateSubTypeDTO(e.getMessage());
         }
         catch (Exception e){
             log.error("An exception thrown : ",e);
@@ -235,7 +275,7 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
         try{
 
             Optional<EmailTemplateSubTypeEntity> entityOpt =
-                    emailTemplateSubTypeRepository.findById(id);
+                    emailTemplateSubTypeRepository.findByIdAndIsActive(id);
 
             if (!entityOpt.isPresent()) {
                 throw new NotFoundException("Email template subtype not found");
@@ -245,7 +285,7 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
 
         }catch (NotFoundException e){
             log.error("An exception thrown : ",e);
-            return null;
+            return new EmailTemplateSubTypeDTO(e.getMessage());
         }
         catch (Exception e){
             log.error("An exception thrown : ",e);
@@ -258,7 +298,7 @@ public class EmailTemplateTypeService implements IEmailTemplateTypeService {
     public List<EmailTemplateSubTypeDTO> getAllSubTypes() {
 
         try{
-            List<EmailTemplateSubTypeEntity> emailTemplateSubTypeEntities = emailTemplateSubTypeRepository.findAll();
+            List<EmailTemplateSubTypeEntity> emailTemplateSubTypeEntities = emailTemplateSubTypeRepository.findAllAndIsActive();
 
             return emailTemplateSubTypeMapper.toEmailTemplateList(emailTemplateSubTypeEntities);
 
