@@ -129,11 +129,17 @@ CREATE TABLE tb_email_template_type (
 );
 
 
+
+
 CREATE TABLE tb_email_template_sub_type (
                                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                            type_id BIGINT NOT NULL,
                                             name VARCHAR(500) NOT NULL,
                                             is_active BOOLEAN NOT NULL DEFAULT TRUE,
                                             created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                            email_template_type_id bigint not null
+                                            email_template_type_id BIGINT NOT NULL,
+
+                                            CONSTRAINT fk_email_template_sub_type_type
+                                                FOREIGN KEY (email_template_type_id)
+                                                    REFERENCES tb_email_template_type(id)
 );
+
