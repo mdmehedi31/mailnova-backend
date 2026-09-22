@@ -1,20 +1,38 @@
 package com.mailnova.DTO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mailnova.exceptionmessage.ApiResponse;
 
 import java.time.LocalDateTime;
 
 public class EmailTemplateDto extends ApiResponse {
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer id;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer typeId;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String emailSubject;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String emailBody;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer createdBy;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private LocalDateTime createdOn;
-    private Boolean isPublic;
-    private Boolean isAiBuild;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean isPublic=true;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean isAiBuild=true;
 
     public EmailTemplateDto() {
     }

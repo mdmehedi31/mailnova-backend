@@ -30,7 +30,7 @@ public class EmailTemplateDBService implements IEmailTemplateDBService {
     }
 
     @Override
-    public EmailTemplateEntity getEmailTemplate(int emailTemplateId) {
+    public EmailTemplateEntity getEmailTemplate(Integer emailTemplateId) {
         try{
             return emailTemplateRepository.findByIdAndIsDeletedIsNullOrIsDeleted(emailTemplateId);
         }catch (Exception e) {
