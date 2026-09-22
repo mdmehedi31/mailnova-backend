@@ -1,9 +1,12 @@
 package com.mailnova.DTO;
 
+import com.mailnova.exceptionmessage.ApiResponse;
+
 import java.time.LocalDateTime;
 
-public class EmailTemplateDto extends AbstractId{
+public class EmailTemplateDto extends ApiResponse {
 
+    private Integer id;
     private Integer typeId;
     private String name;
     private String emailSubject;
@@ -13,6 +16,20 @@ public class EmailTemplateDto extends AbstractId{
     private Boolean isPublic;
     private Boolean isAiBuild;
 
+    public EmailTemplateDto() {
+    }
+
+    public EmailTemplateDto(String message) {
+        super(message);
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getTypeId() {
         return typeId;

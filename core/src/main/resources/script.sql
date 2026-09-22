@@ -143,3 +143,10 @@ CREATE TABLE tb_email_template_sub_type (
                                                     REFERENCES tb_email_template_type(id)
 );
 
+ALTER TABLE `mailnova`.`email_template`
+    CHANGE COLUMN `name` `name` VARCHAR(400) NULL DEFAULT NULL ,
+    CHANGE COLUMN `email_subject` `email_subject` TEXT NULL DEFAULT NULL ;
+
+
+ALTER TABLE `mailnova`.`email_template`
+    ADD COLUMN `is_deleted` TINYINT NULL DEFAULT 1 AFTER `is_ai_build`;

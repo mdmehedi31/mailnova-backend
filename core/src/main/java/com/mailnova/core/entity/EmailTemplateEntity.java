@@ -34,6 +34,8 @@ public class EmailTemplateEntity extends AbstractIdEntity{
     @Column(name = "is_ai_build")
     private Boolean isAiBuild = true;
 
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 
     public Integer getTypeId() {
         return typeId;
@@ -83,19 +85,27 @@ public class EmailTemplateEntity extends AbstractIdEntity{
         this.createdOn = createdOn;
     }
 
-    public Boolean getPublic() {
+    public Boolean getIsPublic() {
         return isPublic;
     }
 
-    public void setPublic(Boolean aPublic) {
+    public void setIsPublic(Boolean aPublic) {
         isPublic = aPublic;
     }
 
-    public Boolean getAiBuild() {
+    public Boolean getIsAiBuild() {
         return isAiBuild;
     }
 
-    public void setAiBuild(Boolean aiBuild) {
+    public void setIsAiBuild(Boolean aiBuild) {
         isAiBuild = aiBuild;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }
