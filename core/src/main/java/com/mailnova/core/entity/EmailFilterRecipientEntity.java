@@ -15,4 +15,19 @@ public class EmailFilterRecipientEntity extends AbstractIdEntity{
     @Column(name = "recipient_email_id")
     private Integer recipientEmailId;
 
+    public Integer getFilterEmailColId() {
+        return filterEmailColId;
+    }
+
+    public void setFilterEmailColId(Integer filterEmailColId) {
+        this.filterEmailColId = filterEmailColId;
+    }
+
+    public Integer getRecipientEmailId() {
+        return recipientEmailId;
+    }
+
+    public void setRecipientEmailId(Integer recipientEmailId) {
+        this.recipientEmailId = recipientEmailId;
+    }
 }

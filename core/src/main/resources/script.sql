@@ -171,3 +171,7 @@ CREATE TABLE tb_email_filter_recipient (
 
 ALTER TABLE `mailnova`.`tb_email_filter_recipient`
     CHANGE COLUMN `recepient_email_id` `recipient_email_id` INT NOT NULL ;
+
+
+ALTER TABLE `mailnova`.`email_campaign_recipient`
+    ADD COLUMN `name` TEXT NULL AFTER `read_count`;

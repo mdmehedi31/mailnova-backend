@@ -31,6 +31,9 @@ public class EmailCampaignRecipientEntity extends AbstractIdEntity{
     @Column(name = "read_count")
     private Integer readCount = 0;
 
+    @Column(name = "name")
+    private String name;
+
     public Integer getEmailCampaignId() {
         return emailCampaignId;
     }
@@ -85,5 +88,13 @@ public class EmailCampaignRecipientEntity extends AbstractIdEntity{
 
     public void setReadCount(Integer readCount) {
         this.readCount = readCount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

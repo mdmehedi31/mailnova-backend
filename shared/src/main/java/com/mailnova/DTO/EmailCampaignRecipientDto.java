@@ -11,6 +11,16 @@ public class EmailCampaignRecipientDto extends AbstractId{
     private String deliveryFailedReason;
     private LocalDateTime openedAt;
     private Integer readCount;
+    private String name;
+
+    public EmailCampaignRecipientDto() {
+    }
+
+    public EmailCampaignRecipientDto(Integer id, String email, String name) {
+        super(id);
+        this.email = email;
+        this.name = name;
+    }
 
     public Integer getEmailCampaignId() {
         return emailCampaignId;
@@ -66,5 +76,13 @@ public class EmailCampaignRecipientDto extends AbstractId{
 
     public void setReadCount(Integer readCount) {
         this.readCount = readCount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
