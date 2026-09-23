@@ -1,5 +1,6 @@
 package com.mailnova.service.emailfilter;
 
+import com.mailnova.DTO.EmailCampaignRecipientDto;
 import com.mailnova.DTO.EmailFilterDTO;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface IEmailFilterService {
     public List<EmailFilterDTO> findAllEmailFilterByCreator(Integer createdById);
     public EmailFilterDTO findByEmailFilterById(Integer emailFilterId);
 
+    public List<EmailCampaignRecipientDto> getAllEmailCampaignRecipientsByEmailFilterId(Integer emailFilterId);
 }
