@@ -168,3 +168,6 @@ CREATE TABLE tb_email_filter_recipient (
                                            filter_email_col_id INT NOT NULL,
                                            recepient_email_id INT NOT NULL
 );
+
+ALTER TABLE `mailnova`.`tb_email_filter_recipient`
+    CHANGE COLUMN `recepient_email_id` `recipient_email_id` INT NOT NULL ;
