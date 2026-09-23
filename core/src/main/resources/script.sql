@@ -150,3 +150,21 @@ ALTER TABLE `mailnova`.`email_template`
 
 ALTER TABLE `mailnova`.`email_template`
     ADD COLUMN `is_deleted` TINYINT NULL DEFAULT 1 AFTER `is_ai_build`;
+
+
+
+CREATE TABLE tb_email_filter (
+                                 id INT PRIMARY KEY AUTO_INCREMENT,
+                                 name VARCHAR(255),
+                                 created_on DATETIME,
+                                 created_by INT,
+                                 description TEXT
+);
+
+
+
+CREATE TABLE tb_email_filter_recipient (
+                                           id INT PRIMARY KEY AUTO_INCREMENT,
+                                           filter_email_col_id INT NOT NULL,
+                                           recepient_email_id INT NOT NULL
+);
