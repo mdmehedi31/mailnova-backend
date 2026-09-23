@@ -5,9 +5,7 @@ import com.mailnova.DTO.EmailTemplateSubTypeDTO;
 import com.mailnova.DTO.EmailTemplateTypeDTO;
 import com.mailnova.core.entity.EmailTemplateSubTypeEntity;
 import com.mailnova.core.entity.EmailTemplateTypeEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -19,6 +17,10 @@ public interface EmailTemplateSubTypeMapper {
     EmailTemplateSubTypeDTO toDto(EmailTemplateSubTypeEntity entity);
 
     public List<EmailTemplateSubTypeDTO> toEmailTemplateList(List<EmailTemplateSubTypeEntity> entities);
+
+    @BeanMapping(
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+    )
     public EmailTemplateTypeEntity updateTypeEntity(EmailTemplateTypeDTO emailTemplateTypeDTO,
                                                     @MappingTarget EmailTemplateTypeEntity typeEntity);
 }

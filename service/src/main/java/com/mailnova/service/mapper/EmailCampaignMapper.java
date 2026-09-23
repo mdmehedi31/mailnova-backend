@@ -14,9 +14,7 @@ public interface EmailCampaignMapper {
     public EmailCampaignEntity dtoToEntity(EmailCampaignDto dto);
     public EmailCampaignDto entityToDto(EmailCampaignEntity entity);
 
-    @BeanMapping (
-            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-    )
+
     public EmailCampaignEntity updateEmailCampaign(EmailCampaignDto emailCampaignDto,
                                                    @MappingTarget EmailCampaignEntity emailCampaignEntity);
 }

@@ -4,6 +4,7 @@ package com.mailnova.DTO;
 import com.mailnova.exceptionmessage.ApiResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class EmailFilterDTO extends ApiResponse {
 
@@ -16,6 +17,8 @@ public class EmailFilterDTO extends ApiResponse {
     private Integer createdBy;
 
     private String description;
+
+    private List<Integer> selectedFilterEmailRecipientIds;
 
     public EmailFilterDTO() {
     }
@@ -62,5 +65,13 @@ public class EmailFilterDTO extends ApiResponse {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Integer> getSelectedFilterEmailRecipientIds() {
+        return selectedFilterEmailRecipientIds;
+    }
+
+    public void setSelectedFilterEmailRecipientIds(List<Integer> selectedFilterEmailRecipientIds) {
+        this.selectedFilterEmailRecipientIds = selectedFilterEmailRecipientIds;
     }
 }

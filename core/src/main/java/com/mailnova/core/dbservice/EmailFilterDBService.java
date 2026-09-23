@@ -42,7 +42,7 @@ public class EmailFilterDBService implements IEmailFilterDBService {
             if (emailFilterEntity.isPresent()) {
                 return emailFilterEntity.get();
             }
-            throw new NotFoundException("Email Filter Not Found");
+            return null;
         } catch (NotFoundException e) {
             throw e;
         } catch (Exception e) {
@@ -111,7 +111,7 @@ public class EmailFilterDBService implements IEmailFilterDBService {
     @Override
     public Boolean deleteEmailFilterRecipient(Integer emailFilterId) {
         try {
-            emailFilterRecipientRepository.deleteById(emailFilterId);
+            emailFilterRecipientRepository.deleteAllByFilterEmailColId(emailFilterId);
             return true;
         } catch (NotFoundException e) {
             throw e;

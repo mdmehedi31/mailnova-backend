@@ -19,4 +19,6 @@ public interface EmailFilterRecipientRepository extends JpaRepository<EmailFilte
     where fr.filterEmailColId=:filterEmailColId
 """)
     List<EmailCampaignRecipientDto> findAllByFilterEmailColId(Integer filterEmailColId);
+
+    void deleteAllByFilterEmailColId(Integer filterEmailColId);
 }
