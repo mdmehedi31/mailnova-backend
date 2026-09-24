@@ -51,6 +51,14 @@ public class EmailCampaignEntity extends AbstractIdEntity {
     @Column(name = "company_id")
     private Integer companyId;
 
+    @Column(name = "tags")
+    private String tags;
+
+    @Column(name = "campaign_type")
+    private String campaignType;
+
+    @Column(name = "replied_to")
+    private String repliedTo;
 
     public String getTimezone() {
         return timezone;
@@ -154,5 +162,29 @@ public class EmailCampaignEntity extends AbstractIdEntity {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getCampaignType() {
+        return campaignType;
+    }
+
+    public void setCampaignType(String campaignType) {
+        this.campaignType = campaignType;
+    }
+
+    public String getRepliedTo() {
+        return repliedTo;
+    }
+
+    public void setRepliedTo(String repliedTo) {
+        this.repliedTo = repliedTo;
     }
 }

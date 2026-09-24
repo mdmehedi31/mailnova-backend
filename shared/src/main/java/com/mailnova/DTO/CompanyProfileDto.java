@@ -15,7 +15,10 @@ public class CompanyProfileDto extends AbstractId   implements GeneralApiRespons
     private String website;
     private Boolean status=true;
     private String colorCode;
-
+    private String linkedinLink;
+    private String fbLink;
+    private String instaLink;
+    private String tiktok;
 
     public String getColorCode() {
         return colorCode;
@@ -100,5 +103,37 @@ public class CompanyProfileDto extends AbstractId   implements GeneralApiRespons
     public LocalDateTime getCreatedAt() {return createdAt;}
 
     public void setCreatedAt(LocalDateTime createdAt) {this.createdAt = createdAt;
+    }
+
+    public String getLinkedinLink() {
+        return linkedinLink;
+    }
+
+    public void setLinkedinLink(String linkedinLink) {
+        this.linkedinLink = linkedinLink;
+    }
+
+    public String getFbLink() {
+        return fbLink;
+    }
+
+    public void setFbLink(String fbLink) {
+        this.fbLink = fbLink;
+    }
+
+    public String getInstaLink() {
+        return instaLink;
+    }
+
+    public void setInstaLink(String instaLink) {
+        this.instaLink = instaLink;
+    }
+
+    public String getTiktok() {
+        return tiktok;
+    }
+
+    public void setTiktok(String tiktok) {
+        this.tiktok = tiktok;
     }
 }

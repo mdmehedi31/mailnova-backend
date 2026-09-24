@@ -175,3 +175,20 @@ ALTER TABLE `mailnova`.`tb_email_filter_recipient`
 
 ALTER TABLE `mailnova`.`email_campaign_recipient`
     ADD COLUMN `name` TEXT NULL AFTER `read_count`;
+
+ALTER TABLE mailnova.email_campaign ADD COLUMN tags VARCHAR(500) NULL AFTER is_deleted,
+    ADD COLUMN campaign_type VARCHAR(100) NULL AFTER tags;
+
+ALTER TABLE `mailnova`.`tb_comp_profile`
+    ADD COLUMN `linkedin_link` LONGTEXT NULL AFTER `status`,
+ADD COLUMN `fb_link` LONGTEXT NULL AFTER `linkedin_link`,
+ADD COLUMN `insta_link` LONGTEXT NULL AFTER `fb_link`,
+ADD COLUMN `tiktok` LONGTEXT NULL AFTER `insta_link`;
+
+ALTER TABLE `mailnova`.`email_campaign`
+    ADD COLUMN `reply_enabled` TINYINT NULL AFTER `campaign_type`;
+
+ALTER TABLE `mailnova`.`email_campaign`
+    ADD COLUMN `replied_to` VARCHAR(500) NULL AFTER `reply_enabled`;
+
+

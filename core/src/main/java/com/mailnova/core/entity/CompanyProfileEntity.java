@@ -47,6 +47,18 @@ public class CompanyProfileEntity extends AbstractIdEntity{
     @Column(name = "status")
     private Boolean status;
 
+    @Column(name = "linkedin_link")
+    private String linkedinLink;
+
+    @Column(name = "fb_link")
+    private String fbLink;
+
+    @Column(name = "insta_link")
+    private String instaLink;
+
+    @Column(name = "tiktok")
+    private String tiktok;
+
     public Boolean getStatus() {
         return status;
     }
@@ -141,5 +153,37 @@ public class CompanyProfileEntity extends AbstractIdEntity{
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public String getLinkedinLink() {
+        return linkedinLink;
+    }
+
+    public void setLinkedinLink(String linkedinLink) {
+        this.linkedinLink = linkedinLink;
+    }
+
+    public String getFbLink() {
+        return fbLink;
+    }
+
+    public void setFbLink(String fbLink) {
+        this.fbLink = fbLink;
+    }
+
+    public String getInstaLink() {
+        return instaLink;
+    }
+
+    public void setInstaLink(String instaLink) {
+        this.instaLink = instaLink;
+    }
+
+    public String getTiktok() {
+        return tiktok;
+    }
+
+    public void setTiktok(String tiktok) {
+        this.tiktok = tiktok;
     }
 }

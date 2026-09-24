@@ -46,6 +46,17 @@ public class EmailCampaignDto extends ApiResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer companyId;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String tags;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String campaignType;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer emailTemplateId;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String repliedTo;
 
     public EmailCampaignDto(String message) {
         super(message);
@@ -155,5 +166,37 @@ public class EmailCampaignDto extends ApiResponse {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getCampaignType() {
+        return campaignType;
+    }
+
+    public void setCampaignType(String campaignType) {
+        this.campaignType = campaignType;
+    }
+
+    public Integer getEmailTemplateId() {
+        return emailTemplateId;
+    }
+
+    public void setEmailTemplateId(Integer emailTemplateId) {
+        this.emailTemplateId = emailTemplateId;
+    }
+
+    public String getRepliedTo() {
+        return repliedTo;
+    }
+
+    public void setRepliedTo(String repliedTo) {
+        this.repliedTo = repliedTo;
     }
 }

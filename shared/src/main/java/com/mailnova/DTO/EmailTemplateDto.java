@@ -34,6 +34,9 @@ public class EmailTemplateDto extends ApiResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean isAiBuild=true;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String type;
+
     public EmailTemplateDto() {
     }
 
@@ -111,5 +114,13 @@ public class EmailTemplateDto extends ApiResponse {
 
     public void setAiBuild(Boolean aiBuild) {
         isAiBuild = aiBuild;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
