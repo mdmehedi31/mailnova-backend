@@ -2,7 +2,7 @@ package com.mailnova.enums;
 
 public enum CampaignType {
 
-    Promotional(),
+    Promotional,
     Newsletter,
     Transactional,
     Announcement,
