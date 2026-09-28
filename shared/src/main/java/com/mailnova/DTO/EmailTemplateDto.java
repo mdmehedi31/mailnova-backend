@@ -37,6 +37,12 @@ public class EmailTemplateDto extends ApiResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String type;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Integer totalUses;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private LocalDateTime lastUsedAt;
+
     public EmailTemplateDto() {
     }
 
@@ -122,5 +128,21 @@ public class EmailTemplateDto extends ApiResponse {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Integer getTotalUses() {
+        return totalUses;
+    }
+
+    public void setTotalUses(Integer totalUses) {
+        this.totalUses = totalUses;
+    }
+
+    public LocalDateTime getLastUsedAt() {
+        return lastUsedAt;
+    }
+
+    public void setLastUsedAt(LocalDateTime lastUsedAt) {
+        this.lastUsedAt = lastUsedAt;
     }
 }
