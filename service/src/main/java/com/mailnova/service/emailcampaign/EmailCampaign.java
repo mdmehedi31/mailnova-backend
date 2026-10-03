@@ -2,12 +2,14 @@ package com.mailnova.service.emailcampaign;
 
 
 import com.mailnova.DTO.EmailCampaignDto;
+import com.mailnova.DTO.EmailCampaignRecipientDto;
 import com.mailnova.core.dbservice.IEmailCampaignDBService;
 import com.mailnova.core.entity.EmailCampaignEntity;
 import com.mailnova.core.exceptionhandler.InvalidInputException;
 import com.mailnova.enums.CampaignStatus;
 import com.mailnova.exceptionmessage.ApiResponse;
 import com.mailnova.service.mapper.EmailCampaignMapper;
+import com.mailnova.service.testService.EmailRecipientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,14 @@ public class EmailCampaign implements IEmailCampaign{
 
     private final IEmailCampaignDBService emailCampaignDBService;
     private final EmailCampaignMapper emailCampaignMapper;
+    private final EmailRecipientService emailRecipientService;
 
     private static final Logger log = LoggerFactory.getLogger(EmailCampaign.class);
 
-    public EmailCampaign(IEmailCampaignDBService emailCampaignDBService, EmailCampaignMapper emailCampaignMapper) {
+    public EmailCampaign(IEmailCampaignDBService emailCampaignDBService, EmailCampaignMapper emailCampaignMapper, EmailRecipientService emailRecipientService) {
         this.emailCampaignDBService = emailCampaignDBService;
         this.emailCampaignMapper = emailCampaignMapper;
+        this.emailRecipientService = emailRecipientService;
     }
 
     @Override
@@ -70,7 +74,17 @@ public class EmailCampaign implements IEmailCampaign{
 
             EmailCampaignEntity saveResponse= this.emailCampaignDBService.save(emailCampaignEntity);
             if(saveResponse!=null){
-                return emailCampaignMapper.entityToDto(saveResponse);
+
+               EmailCampaignDto response = emailCampaignMapper.entityToDto(saveResponse);
+                if(emailCampaignDto.getEmailCampaignRecipientDto() !=null){
+                    EmailCampaignRecipientDto recipientDto = emailCampaignDto.getEmailCampaignRecipientDto();
+                    recipientDto.setEmailCampaignId(saveResponse.getId());
+                    ApiResponse recipientUploaded= emailRecipientService.uploadFile(recipientDto);
+                    if (recipientUploaded !=null){
+                        response.setMessage(recipientUploaded.getMessage());
+                    }
+                }
+                return response;
             }
             return null;
         }catch (InvalidInputException e) {

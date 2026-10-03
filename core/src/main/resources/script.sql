@@ -191,4 +191,7 @@ ALTER TABLE `mailnova`.`email_campaign`
 ALTER TABLE `mailnova`.`email_campaign`
     ADD COLUMN `replied_to` VARCHAR(500) NULL AFTER `reply_enabled`;
 
+ALTER TABLE email_campaign_recipient
+    ADD CONSTRAINT uk_campaign_email
+        UNIQUE (email_campaign_id, email);
 

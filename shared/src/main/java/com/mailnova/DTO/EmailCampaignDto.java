@@ -58,6 +58,9 @@ public class EmailCampaignDto extends ApiResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String repliedTo;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private EmailCampaignRecipientDto emailCampaignRecipientDto;
+
     public EmailCampaignDto(String message) {
         super(message);
     }
@@ -198,5 +201,13 @@ public class EmailCampaignDto extends ApiResponse {
 
     public void setRepliedTo(String repliedTo) {
         this.repliedTo = repliedTo;
+    }
+
+    public EmailCampaignRecipientDto getEmailCampaignRecipientDto() {
+        return emailCampaignRecipientDto;
+    }
+
+    public void setEmailCampaignRecipientDto(EmailCampaignRecipientDto emailCampaignRecipientDto) {
+        this.emailCampaignRecipientDto = emailCampaignRecipientDto;
     }
 }

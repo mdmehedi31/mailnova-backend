@@ -10,6 +10,8 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.data.RepositoryItemWriter;
+import org.springframework.batch.infrastructure.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.infrastructure.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.batch.infrastructure.item.file.LineMapper;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
@@ -19,8 +21,9 @@ import org.springframework.batch.infrastructure.item.file.transform.DelimitedLin
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class CampaignRecipientStoreBatch {
@@ -76,29 +79,37 @@ public class CampaignRecipientStoreBatch {
 
 
     @Bean
-    RepositoryItemWriter<EmailCampaignRecipientEntity> writer(){
+    @StepScope
+    JdbcBatchItemWriter<EmailCampaignRecipientEntity> writer(DataSource dataSource) {
 
-        RepositoryItemWriter<EmailCampaignRecipientEntity> writer = new RepositoryItemWriter<>(emailCampaignRecipientRepository);
-        writer.setMethodName("save");
-        return writer;
+        return new JdbcBatchItemWriterBuilder<EmailCampaignRecipientEntity>()
+                .dataSource(dataSource)
+                .sql("" +
+                        "" +
+                        "INSERT INTO email_campaign_recipient(email_campaign_id, email," +
+                        " email_added_at, delivery_status, name) " +
+                        "VALUES(:emailCampaignId, :email, :emailAddedAt,:deliveryStatus,:name)")
+                .beanMapped()
+                .build();
+
     }
 
 
     @Bean
-    public Job job(JobRepository jobRepository, Step step){
+    public Job job(JobRepository jobRepository, Step step, TempFileCleanListener tempFileCleanListener) {
 
         return new JobBuilder("emailRecipientCamp",jobRepository)
+                .listener(tempFileCleanListener)
                 .start(step).build();
     }
 
-
     @Bean
-    public Step step(JobRepository jobRepository){
+    public Step step(JobRepository jobRepository, JdbcBatchItemWriter<EmailCampaignRecipientEntity> writer){
         return new StepBuilder("emailRecipientCampStep",jobRepository)
-                .<EmailCampaignRecipientEntity,EmailCampaignRecipientEntity>chunk(100)
+                .<EmailCampaignRecipientEntity,EmailCampaignRecipientEntity>chunk(1000)
                 .reader(campaignDataReader(null,null))
                 .processor(processor(null))
-                .writer(writer())
+                .writer(writer)
                 .build();
 
     }

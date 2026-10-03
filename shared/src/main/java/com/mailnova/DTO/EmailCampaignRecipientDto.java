@@ -3,6 +3,7 @@ package com.mailnova.DTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class EmailCampaignRecipientDto extends AbstractId{
 
@@ -15,6 +16,7 @@ public class EmailCampaignRecipientDto extends AbstractId{
     private Integer readCount;
     private String name;
     private MultipartFile attachment;
+    private List<EmailRecipientDTO> emailRecipients;
 
     public EmailCampaignRecipientDto() {
     }
@@ -95,5 +97,13 @@ public class EmailCampaignRecipientDto extends AbstractId{
 
     public void setAttachment(MultipartFile attachment) {
         this.attachment = attachment;
+    }
+
+    public List<EmailRecipientDTO> getEmailRecipients() {
+        return emailRecipients;
+    }
+
+    public void setEmailRecipients(List<EmailRecipientDTO> emailRecipients) {
+        this.emailRecipients = emailRecipients;
     }
 }
