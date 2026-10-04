@@ -2,6 +2,7 @@ package com.mailnova.service.controller;
 
 
 import com.mailnova.DTO.EmailCampaignRecipientDto;
+import com.mailnova.enums.Response;
 import com.mailnova.exceptionmessage.ApiResponse;
 import com.mailnova.service.testService.EmailRecipientService;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class TestController {
         EmailCampaignRecipientDto emailCampaignRecipientDto= new EmailCampaignRecipientDto();
         emailCampaignRecipientDto.setEmailCampaignId(campaignId);
         emailCampaignRecipientDto.setAttachment(file);
-        ApiResponse response= uploadTestService.uploadFile(emailCampaignRecipientDto);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+         uploadTestService.uploadFile(emailCampaignRecipientDto);
+        return new ResponseEntity<>(new ApiResponse(Response.SUCCESS.name()),HttpStatus.OK);
 
     }
 }

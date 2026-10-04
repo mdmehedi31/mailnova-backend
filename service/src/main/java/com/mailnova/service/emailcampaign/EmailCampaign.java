@@ -7,12 +7,14 @@ import com.mailnova.core.dbservice.IEmailCampaignDBService;
 import com.mailnova.core.entity.EmailCampaignEntity;
 import com.mailnova.core.exceptionhandler.InvalidInputException;
 import com.mailnova.enums.CampaignStatus;
+import com.mailnova.enums.Response;
 import com.mailnova.exceptionmessage.ApiResponse;
 import com.mailnova.service.mapper.EmailCampaignMapper;
 import com.mailnova.service.testService.EmailRecipientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -34,7 +36,7 @@ public class EmailCampaign implements IEmailCampaign{
     }
 
     @Override
-    public EmailCampaignDto createAndModifyEmailCampaign(EmailCampaignDto emailCampaignDto) {
+    public EmailCampaignDto createAndModifyEmailCampaign(EmailCampaignDto emailCampaignDto, MultipartFile file) {
         try {
 
             if(emailCampaignDto==null){
@@ -76,24 +78,26 @@ public class EmailCampaign implements IEmailCampaign{
             if(saveResponse!=null){
 
                EmailCampaignDto response = emailCampaignMapper.entityToDto(saveResponse);
-                if(emailCampaignDto.getEmailCampaignRecipientDto() !=null){
-                    EmailCampaignRecipientDto recipientDto = emailCampaignDto.getEmailCampaignRecipientDto();
+                if(file !=null){
+                    EmailCampaignRecipientDto recipientDto = new EmailCampaignRecipientDto();
                     recipientDto.setEmailCampaignId(saveResponse.getId());
-                    ApiResponse recipientUploaded= emailRecipientService.uploadFile(recipientDto);
-                    if (recipientUploaded !=null){
+                    recipientDto.setAttachment(file);
+                    emailRecipientService.uploadFile(recipientDto);
+                    /*if (recipientUploaded !=null){
                         response.setMessage(recipientUploaded.getMessage());
-                    }
+                    }*/
                 }
+                response.setMessage(Response.SUCCESS.name());
                 return response;
             }
-            return null;
+            return new EmailCampaignDto("Email campaign creation failed");
         }catch (InvalidInputException e) {
             log.error("An exception thrown : ",e);
-            return null;
+            return new EmailCampaignDto("Email campaign creation failed");
         }
         catch (Exception e) {
             log.error("An exception thrown : ",e);
-            return null;
+            return new EmailCampaignDto("Email campaign creation failed");
         }
     }
 

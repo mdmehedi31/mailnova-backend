@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.launch.JobOperator;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +22,7 @@ import java.time.ZoneId;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+@EnableAsync
 @Service
 public class EmailRecipientService {
 
@@ -37,7 +40,8 @@ public class EmailRecipientService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public ApiResponse uploadFile(EmailCampaignRecipientDto emailCampaignRecipientDto) {
+    @Async
+    public void uploadFile(EmailCampaignRecipientDto emailCampaignRecipientDto) {
         try {
             Integer campaignId = emailCampaignRecipientDto.getEmailCampaignId();
             MultipartFile campaignFile = emailCampaignRecipientDto.getAttachment();
@@ -69,17 +73,18 @@ public class EmailRecipientService {
 
                 System.out.println("Start time : "+dateTimeStart+" and end time : "+dateTimeEnd);
                if (isUploaded) {
-                   return new ApiResponse(Response.SUCCESS.name());
+                   log.info("Uploaded email successfully....");
+                   //return new ApiResponse(Response.SUCCESS.name());
                }
 
-                return new ApiResponse(Response.FAILED.name());
+              //  return new ApiResponse(Response.FAILED.name());
 
             }
-            return new ApiResponse(Response.FAILED.name());
+           // return new ApiResponse(Response.FAILED.name());
         } catch (Exception e) {
             log.error("An exception thrown : ", e);
 
-            return new ApiResponse(Response.FAILED.name());
+          //  return new ApiResponse(Response.FAILED.name());
         }
     }
 
