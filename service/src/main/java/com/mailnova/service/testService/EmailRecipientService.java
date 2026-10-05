@@ -40,15 +40,16 @@ public class EmailRecipientService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Async
-    public void uploadFile(EmailCampaignRecipientDto emailCampaignRecipientDto) {
+    public boolean uploadFile(EmailCampaignRecipientDto emailCampaignRecipientDto) {
         try {
+            log.info("EMAIL RECIPIENT UPLOAD METHOD >>> >>>> >>>");
             Integer campaignId = emailCampaignRecipientDto.getEmailCampaignId();
             MultipartFile campaignFile = emailCampaignRecipientDto.getAttachment();
 
             Path path = saveTempFile(campaignFile, campaignId.toString());
 
             log.info("Path is : {}", path != null ? path.toString() : "Path not available");
+            boolean isUploaded=false;
             if (path != null) {
 
                 /*JobParameters parameters = new JobParametersBuilder().
@@ -63,7 +64,7 @@ public class EmailRecipientService {
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime();
                 log.info("Starting ::: Start time : {}", dateTimeStart);
-               boolean isUploaded = uploadFile(path, campaignId);
+                 isUploaded = uploadFile(path, campaignId);
 
                 Long endTime = System.currentTimeMillis();
 
@@ -81,9 +82,10 @@ public class EmailRecipientService {
 
             }
            // return new ApiResponse(Response.FAILED.name());
+            return isUploaded;
         } catch (Exception e) {
             log.error("An exception thrown : ", e);
-
+            return false;
           //  return new ApiResponse(Response.FAILED.name());
         }
     }

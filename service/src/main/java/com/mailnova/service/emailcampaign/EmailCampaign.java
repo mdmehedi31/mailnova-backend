@@ -9,6 +9,7 @@ import com.mailnova.core.exceptionhandler.InvalidInputException;
 import com.mailnova.enums.CampaignStatus;
 import com.mailnova.enums.Response;
 import com.mailnova.exceptionmessage.ApiResponse;
+import com.mailnova.service.batch.EmailSentSchedulerRunner;
 import com.mailnova.service.mapper.EmailCampaignMapper;
 import com.mailnova.service.testService.EmailRecipientService;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class EmailCampaign implements IEmailCampaign{
@@ -26,13 +28,19 @@ public class EmailCampaign implements IEmailCampaign{
     private final IEmailCampaignDBService emailCampaignDBService;
     private final EmailCampaignMapper emailCampaignMapper;
     private final EmailRecipientService emailRecipientService;
+    private EmailSentSchedulerRunner emailSentSchedulerRunner;
+
 
     private static final Logger log = LoggerFactory.getLogger(EmailCampaign.class);
 
-    public EmailCampaign(IEmailCampaignDBService emailCampaignDBService, EmailCampaignMapper emailCampaignMapper, EmailRecipientService emailRecipientService) {
+    public EmailCampaign(IEmailCampaignDBService emailCampaignDBService,
+                         EmailCampaignMapper emailCampaignMapper,
+                         EmailRecipientService emailRecipientService,
+                         EmailSentSchedulerRunner emailSentSchedulerRunner) {
         this.emailCampaignDBService = emailCampaignDBService;
         this.emailCampaignMapper = emailCampaignMapper;
         this.emailRecipientService = emailRecipientService;
+        this.emailSentSchedulerRunner = emailSentSchedulerRunner;
     }
 
     @Override
@@ -82,7 +90,22 @@ public class EmailCampaign implements IEmailCampaign{
                     EmailCampaignRecipientDto recipientDto = new EmailCampaignRecipientDto();
                     recipientDto.setEmailCampaignId(saveResponse.getId());
                     recipientDto.setAttachment(file);
-                    emailRecipientService.uploadFile(recipientDto);
+
+                    CompletableFuture.supplyAsync(()->{
+                        log.info("Email uploading started");
+                        return  emailRecipientService.uploadFile(recipientDto);
+                    }).thenAccept(uploade->{
+
+                        log.info("Uploaded email campaign attachment :: {}", uploade);
+                        if(uploade) {
+                            log.info("Start scheduling... ::: ::");
+                            emailSentSchedulerRunner.setEmailSchedule(saveResponse.getId(),
+                                    emailCampaignDto.getSendScheduleDate(), saveResponse.getTimezone());
+                        }
+                    });
+
+
+
                     /*if (recipientUploaded !=null){
                         response.setMessage(recipientUploaded.getMessage());
                     }*/

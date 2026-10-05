@@ -1,75 +1,41 @@
 package com.mailnova.service.batch;
 
 
+import ch.qos.logback.classic.Logger;
 import com.mailnova.core.entity.EmailCampaignRecipientEntity;
-import com.mailnova.core.repository.EmailCampaignRecipientRepository;
+import org.jspecify.annotations.Nullable;
+import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.listener.StepExecutionListener;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.infrastructure.item.data.RepositoryItemWriter;
-import org.springframework.batch.infrastructure.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.infrastructure.item.database.builder.JdbcBatchItemWriterBuilder;
-import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
-import org.springframework.batch.infrastructure.item.file.LineMapper;
-import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.infrastructure.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.infrastructure.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.infrastructure.item.ItemReader;
+import org.springframework.batch.infrastructure.item.ItemWriter;
+import org.springframework.batch.infrastructure.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
 
-import javax.sql.DataSource;
+import java.time.LocalTime;
+import java.util.List;
 
 @Configuration
 public class CampaignRecipientStoreBatch {
 
-    private EmailCampaignRecipientRepository  emailCampaignRecipientRepository;
-
-    public CampaignRecipientStoreBatch(EmailCampaignRecipientRepository emailCampaignRecipientRepository) {
-        this.emailCampaignRecipientRepository = emailCampaignRecipientRepository;
-    }
+    private static final Logger log = (Logger) LoggerFactory.getLogger(CampaignRecipientStoreBatch.class);
 
     @Bean
     @StepScope
-    public FlatFileItemReader<EmailCampaignRecipientEntity>
-    campaignDataReader(@Value("#{jobParameters['filePath']}") String filePath,
+    public ItemReader<EmailCampaignRecipientEntity> campaignDataReader(
                        @Value("#{jobParameters['campaignId']}") String campaignId) {
-
-        return new FlatFileItemReaderBuilder<EmailCampaignRecipientEntity>()
-                .name("EmailCampRecipient_"+campaignId)
-                .resource(new FileSystemResource(filePath))
-                .linesToSkip(1)
-                .lineMapper(lineMapper())
-                .targetType(EmailCampaignRecipientEntity.class)
-                .build();
+        log.info("Reader :: campaignId: " + campaignId);
+        return new ListItemReader<>(List.of(new EmailCampaignRecipientEntity()));
     }
-
-    private LineMapper<EmailCampaignRecipientEntity> lineMapper() {
-
-        DefaultLineMapper<EmailCampaignRecipientEntity> lineMapper =
-                new DefaultLineMapper<>();
-
-        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
-        tokenizer.setDelimiter(",");
-        tokenizer.setNames("name", "email");
-        tokenizer.setStrict(false);
-
-        BeanWrapperFieldSetMapper<EmailCampaignRecipientEntity> fieldSetMapper =
-                new BeanWrapperFieldSetMapper<>();
-
-        fieldSetMapper.setTargetType(EmailCampaignRecipientEntity.class);
-
-        lineMapper.setLineTokenizer(tokenizer);
-        lineMapper.setFieldSetMapper(fieldSetMapper);
-
-        return lineMapper;
-    }
-
 
     @Bean
     @StepScope
@@ -77,23 +43,12 @@ public class CampaignRecipientStoreBatch {
         return new CampaignRecipientStoreProcessor(Integer.valueOf(campaignId));
     }
 
-
     @Bean
     @StepScope
-    JdbcBatchItemWriter<EmailCampaignRecipientEntity> writer(DataSource dataSource) {
+    public ItemWriter<EmailCampaignRecipientEntity> writer() {
 
-        return new JdbcBatchItemWriterBuilder<EmailCampaignRecipientEntity>()
-                .dataSource(dataSource)
-                .sql("" +
-                        "" +
-                        "INSERT INTO email_campaign_recipient(email_campaign_id, email," +
-                        " email_added_at, delivery_status, name) " +
-                        "VALUES(:emailCampaignId, :email, :emailAddedAt,:deliveryStatus,:name)")
-                .beanMapped()
-                .build();
-
+        return null;
     }
-
 
     @Bean
     public Job job(JobRepository jobRepository, Step step, TempFileCleanListener tempFileCleanListener) {
@@ -104,12 +59,50 @@ public class CampaignRecipientStoreBatch {
     }
 
     @Bean
-    public Step step(JobRepository jobRepository, JdbcBatchItemWriter<EmailCampaignRecipientEntity> writer){
+    public Step step(JobRepository jobRepository,
+                     ItemReader<EmailCampaignRecipientEntity> reader,
+                     ItemWriter<EmailCampaignRecipientEntity> writer,
+                     CampaignRecipientStoreProcessor processor) {
+
         return new StepBuilder("emailRecipientCampStep",jobRepository)
                 .<EmailCampaignRecipientEntity,EmailCampaignRecipientEntity>chunk(1000)
-                .reader(campaignDataReader(null,null))
-                .processor(processor(null))
+                .reader(reader)
+                .processor(processor)
                 .writer(writer)
+                .listener(new StepExecutionListener() {
+                    @Override
+                    public @Nullable ExitStatus afterStep(StepExecution stepExecution) {
+                        String campaignId = stepExecution
+                                .getJobParameters()
+                                .getString("campaignId");
+
+                        log.info(
+                                "========== END ==========" +
+                                        " campaignId={} thread={} time={} status={}",
+                                campaignId,
+                                Thread.currentThread().getName(),
+                                LocalTime.now(),
+                                stepExecution.getStatus()
+                        );
+
+                        return stepExecution.getExitStatus();
+                    }
+
+                    @Override
+                    public void beforeStep(StepExecution stepExecution) {
+                        String campaignId = stepExecution
+                                .getJobParameters()
+                                .getString("campaignId");
+
+                        log.info(
+                                "========== START ==========" +
+                                        " campaignId={} thread={} time={}",
+                                campaignId,
+                                Thread.currentThread().getName(),
+                                LocalTime.now()
+                        );
+                    }
+                })
                 .build();
 
     }
