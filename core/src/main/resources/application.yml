@@ -4,7 +4,7 @@
 
 spring:
   datasource:
-    username: ${DB_USER_NAME:root}
-    password: ${DB_PASSWORD:m1n2r3e4}
-    url: ${DB_URL:jdbc:mysql://localhost:3306/mailnova}
+    username: ${DB_USER_NAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
